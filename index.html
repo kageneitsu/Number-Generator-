@@ -66,7 +66,7 @@ footer {
 
 <div class="controls">
   <label for="num">Number:</label>
-  <input type="number" id="num" min="1" max="100" value="1">
+  <input type="number" id="num" value="1" step="1">
 
   <label for="color">Neon Color:</label>
   <input type="color" id="color" value="#7CFF6B">
@@ -83,8 +83,11 @@ footer {
   <button onclick="download()">Download PNG</button>
 </div>
 
-<footer>Note: You may use the generated images in personal and commercial projects.
-You may not claim ownership of any fonts used by your system or redistribute font files </footer>
+<footer>
+Note: You may use the generated images in personal and commercial projects.
+You may not claim ownership of any fonts used by your system or redistribute font files.
+Generate the neon numbers for thumbnails, game icons, and designs.
+</footer>
 
 <script>
 const canvas = document.getElementById("c");
@@ -93,35 +96,46 @@ const numInput = document.getElementById("num");
 const colorInput = document.getElementById("color");
 const sizeSelect = document.getElementById("size");
 
+function getFontSize(number, canvasSize) {
+  const baseSize = canvasSize * 0.625; 
+  const lengthFactor = number.toString().length;
+  return Math.max(32, Math.min(baseSize, baseSize / (lengthFactor * 0.55)));
+}
 
-function drawNumber(){
-  const n = parseInt(numInput.value) || 1;
+function drawNumber() {
+  let n = numInput.value || "1";
   const color = colorInput.value;
   const size = parseInt(sizeSelect.value);
+
+  
+  if (n.toString().length > 1000) {
+    n = n.toString().slice(0,1000);
+    alert("Number too large, truncated to first 1000 digits!");
+  }
 
   canvas.width = size;
   canvas.height = size;
 
-  ctx.clearRect(0,0,size,size);
+  ctx.clearRect(0, 0, size, size);
 
   ctx.fillStyle = color;
   ctx.strokeStyle = color;
-  ctx.lineWidth = size/32;
   ctx.shadowColor = color;
-  ctx.shadowBlur = size/18;
+  ctx.shadowBlur = size / 18;
 
-  ctx.font = `bold ${size*0.625}px Arial`;
+  
+  const fontSize = getFontSize(n, size);
+  ctx.font = `bold ${fontSize}px Arial`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  ctx.fillText(n, size/2, size/2);
-
-  ctx.lineWidth = size/64;
-  ctx.strokeText(n, size/2, size/2);
+  // Draw fill and stroke
+  ctx.fillText(n, size / 2, size / 2);
+  ctx.lineWidth = fontSize / 40;
+  ctx.strokeText(n, size / 2, size / 2);
 }
 
-
-function download(){
+function download() {
   const a = document.createElement("a");
   a.download = `number_${numInput.value}.png`;
   a.href = canvas.toDataURL("image/png");
@@ -131,6 +145,7 @@ function download(){
 
 drawNumber();
 </script>
+
 <footer style="margin-top:20px; font-size:12px; color:#aaa;">
   <a href="privacy.html">Privacy Policy</a>
 </footer>
