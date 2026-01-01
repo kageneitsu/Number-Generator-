@@ -4,55 +4,133 @@
 <meta charset="UTF-8">
 <title>Neon Number Generator</title>
 <style>
+/* ===== Body & General Styles ===== */
 body {
-  background:#111;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  padding-top:40px;
-  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #111, #222); /* dark gradient background */
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
   color: #fff;
-  min-height:100vh;
+  min-height: 100vh;
+  transition: background 0.3s ease;
 }
+
+/* ===== Title ===== */
 h1 {
-  margin-bottom:20px;
-  color:#7CFF6B;
-  text-shadow: 0 0 12px #7CFF6B;
+  color: #7CFF6B;
+  font-size: 2.4rem;
+  text-shadow: 0 0 8px #7CFF6B, 0 0 20px #7CFF6B;
+  margin-bottom: 20px;
+  text-align: center;
 }
+
+/* ===== Canvas Container ===== */
 .canvas-container {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  margin-bottom:20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 2px solid #7CFF6B;
+  box-shadow: 0 0 20px #7CFF6B50, 0 0 40px #7CFF6B30 inset;
+  background: rgba(0, 0, 0, 0.4);
 }
+
 canvas {
-  image-rendering: auto;
-  border:2px solid #7CFF6B;
-  margin-bottom:12px;
-  width:256px;
-  height:256px;
-  background:#111;
+  border-radius: 12px;
+  background: #111;
+  margin-bottom: 12px;
+  max-width: 100%;
 }
+
+/* ===== Controls ===== */
 .controls {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:10px;
-  margin-bottom:20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
-.controls input, .controls select, .controls button {
-  padding:6px 10px;
-  font-size:16px;
+
+.controls input,
+.controls select,
+.controls button {
+  padding: 8px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #7CFF6B;
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  box-shadow: 0 0 8px #7CFF6B50;
+  transition: all 0.2s ease;
 }
+
+/* Input / select focus */
+.controls input:focus,
+.controls select:focus {
+  outline: none;
+  box-shadow: 0 0 16px #7CFF6B;
+  border-color: #7CFF6B;
+}
+
+/* Button hover */
+.controls button:hover {
+  cursor: pointer;
+  background: #7CFF6B10;
+  box-shadow: 0 0 16px #7CFF6B, 0 0 32px #7CFF6B50;
+  transform: scale(1.05);
+}
+
+/* Labels */
 label {
-  font-size:14px;
-  margin-right:4px;
+  font-size: 14px;
+  margin-right: 4px;
+  color: #7CFF6B;
+  text-shadow: 0 0 6px #7CFF6B;
 }
+
+/* Footer */
 footer {
-  margin-top:20px;
-  font-size:12px;
-  color:#aaa;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #aaa;
+  text-align: center;
+}
+
+footer a {
+  color: #7CFF6B;
+  text-decoration: none;
+  text-shadow: 0 0 6px #7CFF6B;
+  transition: all 0.2s ease;
+}
+
+footer a:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 12px #7CFF6B, 0 0 20px #7CFF6B;
+}
+
+/* Responsive for mobile */
+@media (max-width: 480px) {
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+  }
+  .controls input,
+  .controls select,
+  .controls button {
+    width: 100%;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  .canvas-container {
+    padding: 12px;
+  }
 }
 </style>
 </head>
@@ -87,6 +165,8 @@ footer {
 Note: You may use the generated images in personal and commercial projects.
 You may not claim ownership of any fonts used by your system or redistribute font files.
 Generate the neon numbers for thumbnails, game icons, and designs.
+<br>
+<a href="privacy.html">Privacy Policy</a>
 </footer>
 
 <script>
@@ -107,7 +187,6 @@ function drawNumber() {
   const color = colorInput.value;
   const size = parseInt(sizeSelect.value);
 
-  
   if (n.toString().length > 1000) {
     n = n.toString().slice(0,1000);
     alert("Number too large, truncated to first 1000 digits!");
@@ -123,13 +202,11 @@ function drawNumber() {
   ctx.shadowColor = color;
   ctx.shadowBlur = size / 18;
 
-  
   const fontSize = getFontSize(n, size);
   ctx.font = `bold ${fontSize}px Arial`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  // Draw fill and stroke
   ctx.fillText(n, size / 2, size / 2);
   ctx.lineWidth = fontSize / 40;
   ctx.strokeText(n, size / 2, size / 2);
@@ -142,12 +219,8 @@ function download() {
   a.click();
 }
 
-
 drawNumber();
 </script>
 
-<footer style="margin-top:20px; font-size:12px; color:#aaa;">
-  <a href="privacy.html">Privacy Policy</a>
-</footer>
 </body>
 </html>
